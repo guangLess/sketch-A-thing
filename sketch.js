@@ -1,17 +1,52 @@
+var drawing = []
+var currentPath = [];
+var isDrawing = false;
 
+function setup() {
+  canvas = createCanvas(windowWidth, windowHeight);
+  canvas.mousePressed(startPath)
+  canvas.mouseReleased(endPath)
 
-function setup(){
-    createCanvas(windowWidth, windowHeight);
-	strokeWeight(10)
-	stroke(0);
+  strokeWeight(10)
+  stroke(0)
+  noFill()
 }
 
-function draw(){
-    ellipse(50, 50, 130, 130 );
+function startPath() {
+  isDrawing = true;
+  currentPath = [];
+  drawing.push(currentPath);
+  console.log('-->', mouseX, mouseY)
 }
 
-function touchMoved() {
-    line(mouseX, mouseY, pmouseX, pmouseY);
-    return false;
+function endPath() {
+  isDrawing = false;
+  console.log('<->', drawing.length)
+
 }
+
+function draw() {
+  ellipse(50, 50, 130, 130)
+  if (isDrawing) {
+    var point = {
+      x: mouseX,
+      y: mouseY
+    }
+    currentPath.push(point);
+  }
+
+  stroke(0);
+  strokeWeight(4);
+  noFill();
+  for (var i = 0; i < drawing.length; i++) {
+    var path = drawing[i];
+    beginShape();
+    for (var j = 0; j < path.length; j++) {
+      vertex(path[j].x, path[j].y)
+    }
+    endShape();
+  }
+}
+
+//https://github.com/CodingTrain/website/blob/1c684717859e228684d7e2fed6f379e01d949328/CodingChallenges/CC_45_FirebaseSavingDrawing/sketch.js
 
