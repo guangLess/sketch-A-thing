@@ -2,6 +2,16 @@ var drawing = []
 var currentPath = [];
 var isDrawing = false;
 
+// 
+//const {createStore, Pixel,Path} = require('./service.js')
+
+//const store = createStore(initialState)
+
+//var createStore
+//console.log("---->>", createStore)
+console.log("---->>", new Pixel())
+
+
 function setup() {
   canvas = createCanvas(windowWidth, windowHeight);
   canvas.mousePressed(startPath)
@@ -16,6 +26,9 @@ function startPath() {
   isDrawing = true;
   currentPath = [];
   drawing.push(currentPath);
+  
+  store.currentPath = new Path()
+  store.addPath()
   console.log('-->', mouseX, mouseY)
 }
 
@@ -33,6 +46,8 @@ function draw() {
       y: mouseY
     }
     currentPath.push(point);
+    const eachPoint = new Pixel(point, [0,0,0], 3)
+    store.drawPathWith(eachPoint)
   }
 
   stroke(0);

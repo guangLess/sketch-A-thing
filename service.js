@@ -6,7 +6,7 @@ class Pixel {
         this.stroke = stroke
     }
 }
-
+/*
 let _pathData = new WeakMap()
 
 class Path {
@@ -16,7 +16,7 @@ class Path {
         _pathData.set(this, initialPath)
     }
 
-    addPath(data){
+    addPoint(data){
         //firebase method later to extends this path, now add locally 
         let collection = _pathData.get(this)
         collection.push(data)
@@ -25,15 +25,7 @@ class Path {
 
 }
 
-// swift like does not work seems
-// let Pixe = {
-//     point:  {x : 0, y : 0},
-//     color: [0,0,0],
-//     stroke: 0,
-//     init: (point, color, stroke)  =>  {point, color, stroke}
-//   };
 
-//add point, get point 
 class Store {
     constructor(state, currentPath = new Path()){
         this.state = state
@@ -44,13 +36,15 @@ class Store {
     getState() {
         return this.state
     }
-    add(data){
-        const nextState = [...this.getState(), data]
+
+    addPath(){
+        const nextState = [...this.getState(), this.currentPath]
         console.log("------>>", nextState)
         this.state = nextState       
     }
-    collectToPath(){
 
+    drawPathWith(point){
+        this.currentPath.addPoint(point)
     }
 }
 
@@ -59,4 +53,5 @@ const createStore = (initialState) => {
     return store
 }
 
-module.exports = {Pixel, createStore}
+//module.exports = {Pixel, Path, createStore}
+*/
