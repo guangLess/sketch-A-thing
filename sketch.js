@@ -5,11 +5,13 @@ var isDrawing = false;
 // 
 //const {createStore, Pixel,Path} = require('./service.js')
 
-//const store = createStore(initialState)
+const store = createStore([])
 
 //var createStore
-//console.log("---->>", createStore)
-console.log("---->>", new Pixel())
+console.log("---->>", store)
+
+pTest = new Pixel(0,0,0)
+console.log("---->>", pTest)
 
 
 function setup() {
@@ -45,21 +47,48 @@ function draw() {
       x: mouseX,
       y: mouseY
     }
-    currentPath.push(point);
-    const eachPoint = new Pixel(point, [0,0,0], 3)
-    store.drawPathWith(eachPoint)
+    //Fixme: currentPath should be called tracker? or move it somewhere else
+    //if (currentPath.length === 5) currentPath = []
+    currentPath.push(point)
+
+    console.log("---currentPath--->>", currentPath)
+
+    if (currentPath.length > 2) {
+      const pointx = currentPath.slice(-3)[0].x
+      const pointy = currentPath.slice(-3)[0].y
+
+      if (pointx !== point.x && pointy !== point.y) {
+        const eachPoint = new Pixel(point, [0, 0, 0], 3)
+        store.drawPathWith(eachPoint)
+        //console.log(store.currentPath.getPath())
+        console.log("store ------>>",store.getState())
+
+      }
+    }
   }
 
   stroke(0);
   strokeWeight(4);
   noFill();
+/*  
   for (var i = 0; i < drawing.length; i++) {
     var path = drawing[i];
-    beginShape();
+    beginShape()
     for (var j = 0; j < path.length; j++) {
       vertex(path[j].x, path[j].y)
     }
     endShape();
+  }
+*/
+  
+  for (var i = 0; i < store.getState().length; i++) {
+    var path = store.getState()[i].getPath()
+    beginShape()
+    //console.log("------>>", path)
+    for (var j = 0; j < path.length; j++) {
+       vertex(path[j].point.x, path[j].point.y)
+     }
+    endShape()
   }
 }
 
