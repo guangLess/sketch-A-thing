@@ -2,17 +2,21 @@ var drawing = []
 var currentPath = [];
 var isDrawing = false;
 
-// 
-//const {createStore, Pixel,Path} = require('./service.js')
-
 const store = createStore([])
 
-//var createStore
-console.log("---->>", store)
+// pTest = new Pixel(0,0,0)
+// console.log("---->>", pTest)
 
-pTest = new Pixel(0,0,0)
-console.log("---->>", pTest)
 var colorV = 0
+var tempColor = [0,0,0]
+
+var database = firebase.database()
+var drawRef = firebase.database().ref('drawing')
+// drawRef.on('value', snap => console.log("===> snap",snap.val()))
+const testPix = new Pixel({x:10, y:10}, [0,0,0], 1)
+// drawRef.push(testPix)
+drawRef.on('value', snap => console.log("===> snap",snap.val()))
+
 
 function setup() {
   canvas = createCanvas(windowWidth, windowHeight);
@@ -57,17 +61,17 @@ function draw() {
       if (pointx !== point.x && pointy !== point.y) {
         const currentColor = colorV
         const eachColor = color((255- currentColor), (300 - currentColor), currentColor)
-        const strokeV = map(currentColor, 0, 255, 1, 30)
+        const strokeV = map(currentColor, 0, 255, 0.1, 25)
         const eachPoint = new Pixel(point, eachColor, strokeV)
         store.drawPathWith(eachPoint)
         colorV += 1
-
+        tempColor = [(255- currentColor), (300 - currentColor), currentColor]
         //console.log(store.currentPath.getPath())
         //console.log("store ------>>",store.getState())
 
       }
     }
-    if (colorV === 255) colorV = 0
+    if (colorV === 250) colorV = 0
   }
 
   //strokeWeight(2);
@@ -89,14 +93,14 @@ function draw() {
     beginShape()
     //console.log("------>>", path)
     for (var j = 0; j < path.length; j++) {
-
       const colorData = path[j].color
       const strokeData = path[j].stroke
        stroke(colorData)
        strokeWeight(strokeData)
-       //console.log("strokeV>>>>",strokeV)
-
+       console.log("color--->>>>", colorData)
        vertex(path[j].point.x, path[j].point.y)
+       const pixData = new Pixel(path[j].point, tempColor, strokeData)
+       drawRef.push(pixData)
 
      }
     endShape()
