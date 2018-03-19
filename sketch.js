@@ -63,6 +63,7 @@ function endPath() {
 
 function draw() {
   ellipse(50, 50, 130, 130)
+
   if (isDrawing) {
     var point = {
       x: mouseX,
@@ -91,6 +92,7 @@ function draw() {
     if (colorV === 250) colorV = 0
   }
 
+
   // drawing with current status
 
   for (var i = 0; i < store.getState().length; i++) {
@@ -113,7 +115,7 @@ function draw() {
 
   if (preDrawingData.length > 1)
   {
-      beginShape()
+      //beginShape()
     for (var j = 0; j < preDrawingData.length; j++) {
       const colorData = preDrawingData[j].color
       const strokeData = preDrawingData[j].stroke
@@ -121,9 +123,10 @@ function draw() {
       stroke(color(colorData[0], colorData[1], colorData[2], 0.95))
       strokeWeight(strokeData)
       vertex(preDrawingData[j].point.x, preDrawingData[j].point.y)
+      rect(preDrawingData[j].point.x, preDrawingData[j].point.y, strokeData, strokeData)
 
       //point(preDrawingData[j].point.x, preDrawingData[j].point.y)
     }
-    endShape()
+    //endShape()
   }
 }
