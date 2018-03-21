@@ -5,31 +5,20 @@ var currentPath = [];
 var isDrawing = false;
 
 const store = createStore([])
-// pTest = new Pixel(0,0,0)
-// console.log("---->>", pTest)
 var colorV = 0
 var currentKey
-//const eachColor = [255, (300 - 0), 0]
-//const strokeV = 0//map(currentColor, 0, 255, 0.1, 25)
 
 var database = firebase.database()
 var drawRef = firebase.database().ref('drawing')
 var currentLineRef = firebase.database().ref('tempLine')
 var lineCount
-// drawRef.on('value', snap => console.log("===> snap",snap.val()))
-//const testPix = new Pixel({x:10, y:10}, [0,0,0], 1)
-//drawRef.child('hello').push(testPix)
 
 const preDrawingData = []
 var count = 0
 
 drawRef.on('value', snap => {
-  // console.log("===> snap", snap.val())
   snap.forEach(data => {
-    //console.log(data.key, data.val())
     const fireValue = data.val()
-    //const eachPix = new Pixel(fireValue.point, fireValue.color, fireValue.stroke)
-    //fireValue
     preDrawingData.push(fireValue)
   })
   count = preDrawingData.length
@@ -44,9 +33,8 @@ function setup() {
   noFill()
 
   strokeWeight(30)
-  stroke(255,255,255)
+  stroke(255,163,3)
   point(100,400)
- // console.log("lineCount name ====>>>", lineCount)
 }
 
 function startPath() {
@@ -82,8 +70,8 @@ function startPath() {
 
 function endPath() {
   isDrawing = false;
+  // tempLine capture the current path, when drawing(mouseXY) stopped, then clean out the current tempLine and add that node to the drawing node / main collection
   currentLineRef.once('value', snap => drawRef.push(snap.val())) 
-  //console.log('<->', drawing.length)
 }
 
 function draw() {
@@ -92,7 +80,7 @@ function draw() {
   if (isDrawing) {
     var point = {
       x: mouseX,
-      y: mouseY
+      y: Math.floor(mouseY)
     }
 
     //Fixme: currentPath should be called tracker? or move it somewhere else
@@ -105,34 +93,28 @@ function draw() {
 
 
       if (pointx !== point.x && pointy !== point.y) {
-        const currentColor = colorV
-
-        //const eachColor = color((255- currentColor), (300 - currentColor), currentColor)
-         eachColor = [(255 - currentColor), (300 - currentColor), currentColor]
-         strokeV = map(currentColor, 0, 255, 0.1, 25)
-        const eachPoint = new Pixel(point, eachColor, strokeV)
-        currentLineRef.push(eachPoint)
-        //drawRef.child(currentKey).push(eachPoint)
-        //drawRef.child('tempPath').push(eachPoint)
+        const currentColor = colorV.toFixed(2)
+         eachColor = [255,163,3]//[(255 - currentColor), (300 - currentColor), currentColor]
+         strokeV = 1//map(currentColor, 0, 255, 0, 25)
+        const eachPoint = new Pixel(point, eachColor, strokeV.toFixed(2))
+        currentLineRef.push(eachPoint)        
         store.drawPathWith(eachPoint)
-        colorV += 1
+        //colorV += 1
       }
     }
     if (colorV === 250) colorV = 0
   }
-
 
   // drawing with current status
 
   for (var i = 0; i < store.getState().length; i++) {
     var path = store.getState()[i].getPath()
     beginShape()
-    //console.log("------>>", path)
     for (var j = 0; j < path.length; j++) {
       const colorData = path[j].color
       const strokeData = path[j].stroke
       //const color = color(colorData[0], colorData[1], colorData[2])
-      stroke(color(colorData[0], colorData[1], colorData[2], 0.95))
+      stroke(color(colorData[0], colorData[1], colorData[2]))
       strokeWeight(strokeData)
       vertex(path[j].point.x, path[j].point.y)
     }
