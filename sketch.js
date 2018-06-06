@@ -35,7 +35,7 @@ function setup() {
 
   //color picker
   
-  drawColorPicker([0,0,0], {x: 30, y: 10})
+  //drawColorPicker([0,0,0], {x: 30, y: 10})
 }
 
 function startPath() {
@@ -58,9 +58,14 @@ function endPath() {
   currentLineRef.once('value', snap => drawRef.push(snap.val())) 
 }
 
+var r =0 ,g =0 ,b=0;
 function draw() {
+  
+  //ellipse(50, 50, 130, 130)
+  fill(r, g, b, 127);
+  ellipse(30, 10, 60, 60);
+
   noFill()
-  ellipse(50, 50, 130, 130)
   if (isDrawing) {
     var point = {
       x: mouseX,
@@ -115,6 +120,17 @@ function draw() {
 
 // }
 
+function mousePressed() {
+  // Check if mouse is inside the circle
+  var d = dist(mouseX, mouseY, 30, 10);
+  if (d < 30 ) {
+    // Pick new random color values
+    console.log("picked")
+    r = random(255);
+    g = random(255);
+    b = random(255);
+  }
+}
 
 function Picker(char, coord, c) {
   this.x = coord.x
@@ -139,5 +155,4 @@ function Picker(char, coord, c) {
       console.log("color is about to be changed")
     }
   }
-  
 }
