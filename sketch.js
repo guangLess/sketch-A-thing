@@ -6,12 +6,13 @@ var currentPath = [];
 var isDrawing = false;
 
 var database = firebase.database()
-var drawRef = firebase.database().ref('drawing')
+var drawRef = firebase.database().ref('guangTest')
 var currentLineRef = firebase.database().ref('tempLine')
 var count
 
 const preDrawingData = []
 
+//check db first
 drawRef.on('value', snap => {
   snap.forEach(data => {
     const fireValue = data.val()
@@ -19,6 +20,7 @@ drawRef.on('value', snap => {
   })
 })
 
+// Drawing methods
 function setup() {
   canvas = createCanvas(windowWidth, windowHeight)
   canvas.mousePressed(startPath)
