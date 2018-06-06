@@ -20,7 +20,7 @@ drawRef.on('value', snap => {
   })
 })
 
-// Drawing methods
+//Drawing methods
 function setup() {
   canvas = createCanvas(windowWidth, windowHeight)
   canvas.mousePressed(startPath)
@@ -32,6 +32,10 @@ function setup() {
   strokeWeight(3)
   stroke(255,163,3)
   point(100,400)
+
+  //color picker
+  
+  drawColorPicker([0,0,0], {x: 30, y: 10})
 }
 
 function startPath() {
@@ -44,8 +48,8 @@ function startPath() {
   lineCount = 'line' + (count).toString(16)
 
   currentLineRef.set({0: null})
-  const htext = document.getElementById('lines')
-  htext.innerText = lineCount
+  //const htext = document.getElementById('lines')
+  //htext.innerText = lineCount
 }
 
 function endPath() {
@@ -55,6 +59,7 @@ function endPath() {
 }
 
 function draw() {
+  noFill()
   ellipse(50, 50, 130, 130)
   if (isDrawing) {
     var point = {
@@ -101,4 +106,11 @@ function draw() {
       endShape()
     }
   }
+}
+
+function drawColorPicker(c, coord) {
+  const thisColor = color(c[0], c[1], c[2])
+  fill(thisColor)
+  rect(coord.x, coord.y, 30, 30)
+  
 }
