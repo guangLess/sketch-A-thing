@@ -108,9 +108,36 @@ function draw() {
   }
 }
 
-function drawColorPicker(c, coord) {
-  const thisColor = color(c[0], c[1], c[2])
-  fill(thisColor)
-  rect(coord.x, coord.y, 30, 30)
+// function drawColorPicker(c, coord) {
+//   const thisColor = color(c[0], c[1], c[2])
+//   fill(thisColor)
+//   rect(coord.x, coord.y, 30, 30)
+
+// }
+
+
+function Picker(char, coord, c) {
+  this.x = coord.x
+  this.y = coord.y
+  this.r = 30
+
+  if (char === W) this.color = [255, 255, 255]
+  if (char === B) this.color = [0, 0, 0]
+  else {
+      //maybe set color to red?
+      console.error('color input went wrong')
+  }
+
+  this.display = function () {
+    const thisColor = color(c[0], c[1], c[2])
+    fill(thisColor)
+    rect(this.x, this.y, this.r, this.r)
+  }
+  this.picked = function() {
+    let d = dist(mouseX, mouseY, coord.x)
+    if (d < r/2) {
+      console.log("color is about to be changed")
+    }
+  }
   
 }

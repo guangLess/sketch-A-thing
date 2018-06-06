@@ -6,11 +6,10 @@ const B = "black"
 
 class PColor {
     constructor(char) {
-        if (char === W) this.white = [255, 255, 255]
-        if (char === B) this.black = [0, 0, 0]
+        if (char === W) this.color = [255, 255, 255]
+        if (char === B) this.color = [0, 0, 0]
         else {
             console.error('color input went wrong')
         }
     }
 }
-
