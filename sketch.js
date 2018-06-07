@@ -1,6 +1,8 @@
 /* eslint-disable */
 const W = "white"
 const B = "black"
+let blackPicker
+let whitePicker
 
 const store = createStore([])
 
@@ -27,7 +29,7 @@ function setup() {
   canvas = createCanvas(windowWidth, windowHeight)
   canvas.mousePressed(startPath)
   canvas.mouseReleased(endPath)
-  //background(51)
+  background(51)
   smooth()
   noFill()
 
@@ -36,8 +38,11 @@ function setup() {
   point(100,400)
 
   //color picker
-  let blackPicker = new Picker(B, {x: 30, y: 10})
+  blackPicker = new Picker(B, {x: 30, y: 110})
   blackPicker.display()
+
+  whitePicker = new Picker(W, {x: 30, y: 60})
+  whitePicker.display()
   //drawColorPicker([0,0,0], {x: 30, y: 10})
 }
 
@@ -133,6 +138,8 @@ function mousePressed() {
     g = random(255);
     b = random(255);
   }
+  blackPicker.picked()
+  whitePicker.picked()
 }
 
 function Picker(char, coord) {
@@ -142,20 +149,25 @@ function Picker(char, coord) {
 
   if (char === W) this.color = [255, 255, 255]
   if (char === B) this.color = [0, 0, 0]
-  else {
+  if (char !== B || char !== W || char !== null) {
       //maybe set color to red?
       console.error('color input went wrong')
   }
 
   this.display = function () {
-    const thisColor = color(this.color)
-    fill(thisColor)
-    rect(this.x , this.y + 300, this.r, this.r)
+    //const thisColor = color(this.color)
+    //fill(thisColor)
+    rect(this.x , this.y, this.r, this.r)
   }
   this.picked = function() {
-    let d = dist(mouseX, mouseY, coord.x)
-    if (d < r/2) {
-      console.log("color is about to be changed")
+    let d = dist(mouseX, mouseY, this.x, this.y)
+    console.log("r is", this.r, d, this.x, this.y)
+    if (d < this.r) {
+      const thisColor = color(this.color)
+      fill(thisColor)
+      console.log("inside!", this.color)
+      rect(this.x , this.y, this.r, this.r)
+      
     }
   }
 }
