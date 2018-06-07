@@ -1,4 +1,6 @@
 /* eslint-disable */
+const W = "white"
+const B = "black"
 
 const store = createStore([])
 
@@ -34,7 +36,8 @@ function setup() {
   point(100,400)
 
   //color picker
-  
+  let blackPicker = new Picker(B, {x: 30, y: 10})
+  blackPicker.display()
   //drawColorPicker([0,0,0], {x: 30, y: 10})
 }
 
@@ -132,7 +135,7 @@ function mousePressed() {
   }
 }
 
-function Picker(char, coord, c) {
+function Picker(char, coord) {
   this.x = coord.x
   this.y = coord.y
   this.r = 30
@@ -145,9 +148,9 @@ function Picker(char, coord, c) {
   }
 
   this.display = function () {
-    const thisColor = color(c[0], c[1], c[2])
+    const thisColor = color(this.color)
     fill(thisColor)
-    rect(this.x, this.y, this.r, this.r)
+    rect(this.x , this.y + 300, this.r, this.r)
   }
   this.picked = function() {
     let d = dist(mouseX, mouseY, coord.x)
