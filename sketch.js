@@ -3,6 +3,7 @@ const W = "white"
 const B = "black"
 let blackPicker
 let whitePicker
+var pStroke
 
 const store = createStore([])
 
@@ -34,7 +35,8 @@ function setup() {
   noFill()
 
   strokeWeight(3)
-  stroke(255,163,3)
+  pStroke = color(255,163,3)
+  stroke(pStroke)//(255,163,3)
   point(100,400)
 
   //color picker
@@ -69,10 +71,8 @@ function endPath() {
 var r =0 ,g =0 ,b=0;
 function draw() {
   
-  //ellipse(50, 50, 130, 130)
   fill(r, g, b, 127);
   ellipse(30, 10, 60, 60);
-
   noFill()
   if (isDrawing) {
     var point = {
@@ -102,6 +102,8 @@ function draw() {
     // draw
     for (var i = 0; i < preDrawingData.length; i++) {
       const eachLine = preDrawingData[i]
+      pStroke = color(255,163,3)
+      stroke(pStroke)
       beginShape()
       for (var j in eachLine) {
         vertex(eachLine[j].point.x, eachLine[j].point.y)
@@ -113,7 +115,8 @@ function draw() {
   // drawing with current status
   for (var i = 0; i < store.getState().length; i++) {
     var path = store.getState()[i].getPath()
-    //stroke(255,3,3)
+    pStroke = color(255,3,3)
+    stroke(pStroke)
     beginShape()
     for (var j = 0; j < path.length; j++) {
       vertex(path[j].point.x, path[j].point.y)
