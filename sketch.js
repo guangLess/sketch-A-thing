@@ -96,16 +96,6 @@ function draw() {
       }
     }
   }
-
-  // drawing with current status
-  for (var i = 0; i < store.getState().length; i++) {
-    var path = store.getState()[i].getPath()
-    beginShape()
-    for (var j = 0; j < path.length; j++) {
-      vertex(path[j].point.x, path[j].point.y)
-    }
-    endShape()
-  }
   // drawing from firebase 
   //FIXME: this should be a node tree structure....
   if (preDrawingData.length > 0) {
@@ -118,6 +108,17 @@ function draw() {
       }
       endShape()
     }
+  }
+
+  // drawing with current status
+  for (var i = 0; i < store.getState().length; i++) {
+    var path = store.getState()[i].getPath()
+    //stroke(255,3,3)
+    beginShape()
+    for (var j = 0; j < path.length; j++) {
+      vertex(path[j].point.x, path[j].point.y)
+    }
+    endShape()
   }
 }
 
@@ -167,6 +168,7 @@ function Picker(char, coord) {
       fill(thisColor)
       console.log("inside!", this.color)
       rect(this.x , this.y, this.r, this.r)
+      //stroke(this.color)
       
     }
   }
